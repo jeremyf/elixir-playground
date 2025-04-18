@@ -1,6 +1,10 @@
 defmodule MatchstickFactory do
   # An array of tuples that represent the box type and capacity.
-  @box_types [ {:big, 50}, {:medium, 20}, {:small, 5} ]
+  @box_types [
+     {:big, 50},
+     {:medium, 20},
+     {:small, 5}
+   ]
 
   # Given a number of matchsticks, we process the box types in order.  Filling a
   # number of boxes of the type based on their capacity.  Then, with any
