@@ -9,9 +9,11 @@ defmodule GeneralStore do
   end
 
   def filter_items([], _), do: []
+
   def filter_items([item|tail], magic: magic) when item.magic == magic do
     [item | filter_items(tail, magic: magic)]
   end
+
   def filter_items([item|tail], magic: magic) when item.magic != magic do
     filter_items(tail, magic: magic)
   end

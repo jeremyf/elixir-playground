@@ -24,4 +24,25 @@ defmodule MatchstickFactory do
                                 end)
     boxes_used_by_type
   end
+
+
+  # The `MatchstickFactory.boxes_v2/3` is a recursive implementation of
+  # `MatchstickFactory.boxes/2`.  Both result in the same structural output.
+  #
+  # I find `MatchstickFactory.boxes/3` far easier to read.  In part because I
+  # don't need to rely on as many variable names.
+  #
+  # The header function is provided as an entry point into the recursion.
+  def boxes_v2(matchsticks, box_types \\ @box_types, manifest \\ %{})
+
+  def boxes_v2(matchsticks, [{box_type, capacity} | tail], manifest) do
+    boxes = div(matchsticks, capacity)
+    remaining = matchsticks - boxes * capacity
+    manifest = Map.put(manifest, box_type, boxes)
+    boxes_v2(remaining, tail, manifest)
+  end
+
+  def boxes_v2(matchsticks, [], manifest) do
+    Map.put(manifest, :remaining_matchsticks, matchsticks)
+  end
 end
