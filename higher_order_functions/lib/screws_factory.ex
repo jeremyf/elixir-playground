@@ -2,12 +2,12 @@ defmodule ScrewsFactory do
   def pieces do
     Enum.take(Stream.cycle(["-"]), 1000)
   end
-  def run(pieces) do
-    pieces
-    |> Enum.map(&add_thread/1)
-    |> Enum.map(&add_head/1)
-    |> Enum.each(&output/1)
-  end
+  # def run(pieces) do
+  #   pieces
+  #   |> Enum.map(&add_thread/1)
+  #   |> Enum.map(&add_head/1)
+  #   |> Enum.each(&output/1)
+  # end
 
   # In this function, we're relying on streaming to create non-blocking
   def stream_run(pieces) do
@@ -17,13 +17,20 @@ defmodule ScrewsFactory do
     |> Enum.each(&output/1)
   end
 
-  def run_more(pieces) do
+  def run(pieces) do
     pieces
     |> Stream.chunk_every(50)
     |> Stream.flat_map(&add_thread_chunked/1)
     |> Stream.chunk_every(100)
     |> Stream.flat_map(&add_head_chunked/1)
+    |> Stream.chunk_every(30)
+    |> Stream.map(&pack/1)
     |> Enum.each(&output/1)
+  end
+
+  def pack(pieces) do
+    Process.sleep(70)
+    Enum.map(pieces, &("|"<>&1<>"|"))
   end
 
   def add_thread_chunked(pieces) do
